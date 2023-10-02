@@ -1,0 +1,7 @@
+name: ShopPlugin
+version: '${project.version}'
+main: skyfire.shopplugin.ShopPlugin
+api-version: '1.20'
+prefix: ShopPlugin
+depend: [Vault, PlaceholderAPI]
+authors: [Aak]
