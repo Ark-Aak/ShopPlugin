@@ -6,8 +6,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import skyfire.shopplugin.commands.ShopExecutor;
-import skyfire.shopplugin.configs.Data;
-import skyfire.shopplugin.configs.Message;
+import skyfire.shopplugin.data.FDataManager;
+import skyfire.shopplugin.data.MessageManager;
+import skyfire.shopplugin.data.ShopManager;
 import skyfire.shopplugin.listeners.PlayerInteractListener;
 import skyfire.shopplugin.shop.Shop;
 import skyfire.shopplugin.shop.ShopItem;
@@ -21,6 +22,8 @@ public final class ShopPlugin extends JavaPlugin {
     public static JavaPlugin instance;
     public static Logger log;
     public static Economy econ = null;
+    public static MessageManager message;
+    public static ShopManager shop;
 
     private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider;
@@ -49,11 +52,11 @@ public final class ShopPlugin extends JavaPlugin {
         log.info("config.yml is loaded.");
         log.info("Try to load message.yml...");
         saveResource("message.yml", false);
-        Message.init("message.yml");
+        message = new MessageManager("message.yml");
         log.info("message.yml is loaded.");
         log.info("Try to load data.yml...");
         saveResource("data.yml", false);
-        Data.init("data.yml");
+        shop = new ShopManager("data.yml");
         log.info("data.yml is loaded.");
         log.info("Try to load Vault...");
         if (!setupEconomy()) {

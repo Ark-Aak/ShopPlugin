@@ -6,11 +6,15 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import skyfire.shopplugin.configs.Data;
-import skyfire.shopplugin.configs.Message;
+import skyfire.shopplugin.data.FDataManager;
+import skyfire.shopplugin.data.MessageManager;
 import skyfire.shopplugin.ShopPlugin;
+import skyfire.shopplugin.utils.StringUtil;
 
 import java.util.List;
+
+import static skyfire.shopplugin.ShopPlugin.message;
+import static skyfire.shopplugin.ShopPlugin.shop;
 
 public class ShopExecutor implements Listener, TabExecutor {
 
@@ -18,13 +22,20 @@ public class ShopExecutor implements Listener, TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1){
             if (args[0].equals("reload")) {
-                Message.reload();
-                Data.reload();
+                message.reload();
+                shop.reload();
                 ShopPlugin.instance.reloadConfig();
                 return true;
             }
         }
-        sender.sendMessage(Message.getColored("unknown_command"));
+        else if (args.length == 3) {
+            if (args[0].equals("create")) {
+                String name = args[2];
+                shop.createShop(name);
+                sender.sendMessage(StringUtil.replacePlaceholder(message.getColored("create_shop"), "%name%", name));
+            }
+        }
+        sender.sendMessage(message.getColored("unknown_command"));
         return false;
     }
 
